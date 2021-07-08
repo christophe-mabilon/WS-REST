@@ -1,3 +1,4 @@
+"usestrict";
 const divRestaurant = document.querySelector('.restaurants');
 const divPlats = document.querySelector('.plats');
 let buttonFormAddPlat = document.querySelector('.addplat');
@@ -74,7 +75,6 @@ function faireDesCardsRestaurants(tableauRestaurants) {
 function faireCardRestaurantsEtCardsPlats(restaurants, plats) {
 
     cardRestaurants = `<div class="col-4 p-3 align-items-center p-auto">
-
     <div class="card " style="width: 18rem;">
         <div class="card-body ">
         <h5 class="card-title">${restaurants.name}</h5>
@@ -102,13 +102,8 @@ function faireCardRestaurantsEtCardsPlats(restaurants, plats) {
            
         <hr>
     </div>`;
-
-
-
         cardsPlats += cardPlat;
-
-        divPlats.innerHTML = cardsPlats;
-    })
+        divPlats.innerHTML = cardsPlats;    })
 
     let cardAdddPlat = `<div class="row">
     <input type="text" name="name" id="name" placeholder="Nom du plat">
@@ -123,48 +118,47 @@ function faireCardRestaurantsEtCardsPlats(restaurants, plats) {
     let platDescription = document.querySelector('#description');
     let platPrice = document.querySelector('#price');
     let restaurant_idPlat = document.querySelector('#restaurant_id');
+    
     cardsPlats += cardAdddPlat;
-    if (platName && platDescription && platPrice && !isNaN(restaurant_idPlat)) {
-
-        platName = platName.value;
-        platDescription = platDescription.value;
-        platPrice = platPrice.value;
-        restaurant_idPlat = restaurant_idPlat.value
-
-    }
+    
     document.querySelector('.retourRestaurants').addEventListener('click', event => {
 
         afficheTousLesRestaurants();
 
     })
+}
 
-    document.querySelectorAll('.supprPlat').forEach(bouton => {
 
-        bouton.addEventListener('click', event => {
-            supprimeLePlat(bouton.value);
-
-        })
-    })
 
     //fonction pour supprimer une recette
     function supprimeLePlat(idPlat) {
         let maRequete = new XMLHttpRequest();
-        maRequete.open('POST', 'http://localhost/php/framework_exam_2/baseFramework/index.php?controller=plat&task=supprApi');
+        maRequete.open('POST','http://localhost/php/framework_exam_2/baseFramework/index.php?controller=plat&task=supprApi');
 
         maRequete.onload = () => {
+            
             let divPlat = document.querySelector(`div[data-plat="${idPlat}"]`);
             console.log(divPlat);
             divPlat.remove();
+            
         }
         maRequete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
         params = "id=" + idPlat
         maRequete.send(params);
 
-    }
+        
 
+    }
+    document.querySelectorAll('.supprPlat').forEach(bouton => {
+            bouton.addEventListener('click', (event) => {
+                
+        supprimeLePlat(bouton.value);
+});
+    });
     function creationDePlat(name, description, price, restaurant_id) {
 
     }
-
-}
+    
+    
+    
